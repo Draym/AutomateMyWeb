@@ -1,7 +1,7 @@
 package org.andres_k.web.web.controllers;
 
 import org.andres_k.web.web.models.auth.User;
-import org.andres_k.web.web.models.services.UserService;
+import org.andres_k.web.web.services.UserService;
 import org.andres_k.web.web.utils.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
     @ResponseBody
-    public HttpResponse deleteUser(long id) {
+    public HttpResponse deleteUser(Long id) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -34,7 +34,7 @@ public class UserController {
         HttpResponse response = new HttpResponse();
 
         try {
-            User newUser = this.userService.updateUser(user);
+            User newUser = this.userService.createUser(user);
             response.addResult(newUser);
         } catch (Exception ex) {
             response.addError("Error updating the user:" + ex.toString());

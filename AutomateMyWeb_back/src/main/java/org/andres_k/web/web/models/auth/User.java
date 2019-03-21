@@ -2,91 +2,64 @@ package org.andres_k.web.web.models.auth;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
-@Inheritance
-@DiscriminatorColumn(name = "user_type")
+@Entity(name = "User")
 @Table(name = "users")
 public class User {
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     @NotNull
+    @Column(name="enabled")
+    private int enabled;
+    @NotNull
+    @Column(name="email")
     private String email;
     @NotNull
+    @Column(name="pseudo")
     private String pseudo;
     @NotNull
+    @Column(name="password")
     private String password;
-    @ElementCollection
-    private List<String> scriptIds = new ArrayList<>();
 
-    /**
-     * @return the id
-     */
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    /**
-     * @return the pseudo
-     */
+    public int getEnabled() {
+        return this.enabled;
+    }
+
     public String getPseudo() {
         return this.pseudo;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return this.email;
     }
 
-    /**
-     * @return the password
-     */
     public String getPassword() {
         return this.password;
     }
-    /**
-     * @return the scriptIds
-     */
-    public List<String> getScriptIds() {
-        return this.scriptIds;
-    }
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * @param email the email to set
-     */
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * @param pseudo the pseudo to set
-     */
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
 
-    /**
-     * @param password the password to set
-     */
     public void setPassword(String password) {
         this.password = password;
-    }
-    /**
-     * @param scriptIds the scriptIds to set
-     */
-    public void setScriptIds(List<String> scriptIds) {
-        this.scriptIds = scriptIds;
     }
 }
