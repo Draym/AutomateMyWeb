@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "Directive")
-@Table(name = "directives")
+@Table(name = "job_directives")
 public class Directive extends UserProperty {
     @NotNull
     @Column(name = "description")

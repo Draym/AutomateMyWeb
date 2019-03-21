@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "Role")
-@Table(name = "roles")
+@Table(name = "auth_roles")
 public class Role {
     @Id
     @Column(name="id")

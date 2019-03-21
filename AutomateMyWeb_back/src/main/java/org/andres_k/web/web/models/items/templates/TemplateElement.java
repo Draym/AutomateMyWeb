@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "TemplateElement")
-@Table(name = "template_scripts")
+@Table(name = "template_elements")
 public class TemplateElement {
     @Id
     @NotNull

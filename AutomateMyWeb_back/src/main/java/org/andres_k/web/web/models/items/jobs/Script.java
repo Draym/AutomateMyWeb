@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "Script")
-@Table(name = "scripts")
+@Table(name = "job_scripts")
 public class Script extends UserProperty {
     @NotNull
     @Column(name = "description")

@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "MarketDirective")
-@Table(name = "market_directive")
+@Table(name = "market_directives")
 public class MarketDirective extends UserProperty {
     @NotNull
     @Column(name = "description")

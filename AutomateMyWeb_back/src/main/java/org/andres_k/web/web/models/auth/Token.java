@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "Token")
-@Table(name = "tokens")
+@Table(name = "auth_tokens")
 public class Token {
     @Id
     @Column(name="id")

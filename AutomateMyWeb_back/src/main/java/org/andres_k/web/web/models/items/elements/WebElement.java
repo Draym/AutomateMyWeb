@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "WebElement")
-@Table(name = "web_elements")
+@Table(name = "job_elements")
 public class WebElement extends UserProperty {
 
     @NotNull
