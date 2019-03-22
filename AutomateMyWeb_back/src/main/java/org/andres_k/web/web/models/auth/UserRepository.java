@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return the user having the passed pseudo or null if no user is found.
      */
     User findByPseudo(String pseudo);
+    boolean existsUserByEmail(String email);
+    boolean existsUserByPseudo(String pseudo);
 }

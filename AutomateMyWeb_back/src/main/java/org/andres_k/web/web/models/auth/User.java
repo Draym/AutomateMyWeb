@@ -1,5 +1,7 @@
 package org.andres_k.web.web.models.auth;
 
+import org.andres_k.web.web.utils.PasswordStorage;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -7,21 +9,32 @@ import javax.validation.constraints.NotNull;
 @Table(name = "users")
 public class User {
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
-    @Column(name="enabled")
-    private int enabled;
+    @Column(name = "enabled")
+    private Integer enabled;
     @NotNull
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
     @NotNull
-    @Column(name="pseudo")
+    @Column(name = "pseudo")
     private String pseudo;
     @NotNull
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
+
+    public void copy(User user) throws PasswordStorage.CannotPerformOperationException {
+        if (user.password != null)
+            this.setPassword(PasswordStorage.createHash(user.password));
+        if (user.enabled != null)
+            this.setEnabled(user.enabled);
+        if (user.email != null)
+            this.setEmail(user.email);
+        if (user.pseudo != null)
+            this.setPseudo(user.pseudo);
+    }
 
     public Long getId() {
         return this.id;

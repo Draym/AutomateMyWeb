@@ -7,6 +7,7 @@ import org.andres_k.web.web.services.UserService;
 import org.andres_k.web.web.utils.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,15 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class AuthController {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private UserService userService;
     @Autowired
     private AuthService authService;
 
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     @ResponseBody
-    public HttpResponse login(String email, String password) {
+    public HttpResponse login(@RequestBody String email, @RequestBody String password) {
         HttpResponse response = new HttpResponse();
 
         try {
@@ -36,7 +35,7 @@ public class AuthController {
 
     @RequestMapping(value = "/auth/register", method = RequestMethod.POST)
     @ResponseBody
-    public HttpResponse register(User user) {
+    public HttpResponse register(@RequestBody User user) {
         HttpResponse response = new HttpResponse();
 
         try {

@@ -1,8 +1,6 @@
 package org.andres_k.web.web.models.items.templates;
 
 import org.andres_k.web.web.models.UserProperty;
-import org.andres_k.web.web.models.items.jobs.Directive;
-import org.andres_k.web.web.models.items.elements.WebElement;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.List;
 
 @Entity(name = "Template")
 @Table(name = "templates")
-public class Template extends UserProperty {
+public class Template extends UserProperty<Template> {
     @OneToMany(
             mappedBy = "element",
             cascade = CascadeType.ALL,
@@ -39,5 +37,13 @@ public class Template extends UserProperty {
 
     public void setDirectives(List<TemplateDirective> directives) {
         this.directives = directives;
+    }
+
+    @Override
+    public void copy(Template object) {
+        super.copy(object);
+        // DO NOT IMPLEMENT template/update
+        // DO template/element/add
+        // DO template/directive/add
     }
 }

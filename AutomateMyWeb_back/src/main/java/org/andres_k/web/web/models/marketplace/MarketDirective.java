@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "MarketDirective")
 @Table(name = "market_directives")
-public class MarketDirective extends UserProperty {
+public class MarketDirective extends UserProperty<MarketDirective> {
     @NotNull
     @Column(name = "description")
     private String description;
@@ -56,4 +56,16 @@ public class MarketDirective extends UserProperty {
         this.version = version;
     }
 
+    @Override
+    public void copy(MarketDirective object) {
+        super.copy(object);
+        if (object.description != null)
+            this.setDescription(object.description);
+        if (object.imageURL != null)
+            this.setImageURL(object.imageURL);
+        if (object.directive != null)
+            this.setDirective(object.directive);
+        if (object.version != null)
+            this.setVersion(object.version);
+    }
 }

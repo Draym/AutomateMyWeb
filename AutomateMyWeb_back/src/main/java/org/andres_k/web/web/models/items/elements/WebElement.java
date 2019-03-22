@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "WebElement")
 @Table(name = "job_elements")
-public class WebElement extends UserProperty {
+public class WebElement extends UserProperty<WebElement> {
 
     @NotNull
     @Column(name = "css_selector")
@@ -19,5 +19,12 @@ public class WebElement extends UserProperty {
 
     public void setCssSelector(String cssSelector) {
         this.cssSelector = cssSelector;
+    }
+
+    @Override
+    public void copy(WebElement object) {
+        super.copy(object);
+        if (object.cssSelector != null)
+            this.setCssSelector(object.cssSelector);
     }
 }

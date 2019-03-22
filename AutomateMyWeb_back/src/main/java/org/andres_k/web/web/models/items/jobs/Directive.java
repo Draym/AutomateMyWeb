@@ -7,8 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "Directive")
 @Table(name = "job_directives")
-public class Directive extends UserProperty {
-    @NotNull
+public class Directive extends UserProperty<Directive> {
     @Column(name = "description")
     private String description;
     @NotNull
@@ -28,5 +27,14 @@ public class Directive extends UserProperty {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public void copy(Directive object) {
+        super.copy(object);
+        if (object.value != null)
+            this.setValue(object.value);
+        if (object.description != null)
+            this.setDescription(object.description);
     }
 }

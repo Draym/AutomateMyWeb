@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,16 +58,42 @@ public class ScriptController {
         return response;
     }
 
-    @RequestMapping(value = {"/script/add", "/script/update"}, method = {RequestMethod.POST, RequestMethod.PUT})
+    @RequestMapping(value = "/script/add", method = RequestMethod.POST)
+    @ResponseBody
+    public HttpResponse addScript(@RequestParam String token, @RequestBody Script script) {
+        HttpResponse response = new HttpResponse();
+
+        try {
+            User user = this.authService.getUserByToken(token);
+
+            if (script.getName() == null || script.getValue() == null || script.getUserId() == null)
+                throw new NullPointerException("The script's name/value/userId is null.");
+
+            script.setOwnerId(user.getId());
+            this.scriptRepository.save(script);
+            response.addResult(script);
+        } catch (Exception ex) {
+            response.addError("Error creating the script:" + ex.toString());
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/script/update", method = RequestMethod.PUT)
     @ResponseBody
     public HttpResponse updateScript(@RequestParam String token, @RequestBody Script script) {
         HttpResponse response = new HttpResponse();
 
         try {
-            if (script.getName() == null || script.getValue() == null || script.getOwnerId() == null || script.getUserId() == null)
-                throw new NullPointerException("The script's name OR description is null");
-            this.scriptRepository.save(script);
-            response.addResult(true);
+            if (script.getId() == null)
+                throw new EntityNotFoundException("The script should contains it's original id.");
+            Optional<Script> optScript = this.scriptRepository.findById(script.getId());
+
+            if (!optScript.isPresent())
+                throw new EntityNotFoundException("The script has not been found with the given id. please use script/add");
+            Script newScript = optScript.get();
+            newScript.copy(script);
+            this.scriptRepository.save(newScript);
+            response.addResult(newScript);
         } catch (Exception ex) {
             response.addError("Error creating the script:" + ex.toString());
         }
@@ -110,13 +137,13 @@ public class ScriptController {
 
         try {
             User user = this.authService.getUserByToken(token);
+
             if (script.getName() == null || script.getValue() == null)
-                throw new NullPointerException("The script's name OR description is null");
-            if (script.getOwnerId() == null)
-                script.setOwnerId(user.getId());
+                throw new NullPointerException("The script's name OR value is null");
+            script.setOwnerId(script.getOwnerId() != null ? script.getOwnerId() : user.getId());
             script.setUserId(user.getId());
             this.scriptRepository.save(script);
-            response.addResult(true);
+            response.addResult(script);
         } catch (Exception ex) {
             response.addError("Error creating the script:" + ex.toString());
         }
@@ -133,15 +160,11 @@ public class ScriptController {
 
             Script target = this.jobService.find(script.getId(), user.getId());
             if (target == null)
-                throw new SecurityException("The script {" + script.getId() + "} already exist, please use 'myscripts/update'}");
-            if (script.getName() == null || script.getValue() == null)
-                throw new NullPointerException("The script's name OR description is null");
+                throw new SecurityException("The script {" + script.getId() + "} doesn't exist for this user, please use 'myscript/add'}");
 
-            target.setDescription(script.getDescription());
-            target.setName(script.getName());
-            target.setValue(script.getValue());
+            target.copy(script);
             this.scriptRepository.save(target);
-            response.addResult(true);
+            response.addResult(target);
         } catch (Exception ex) {
             response.addError("Error creating the script:" + ex.toString());
         }

@@ -5,20 +5,27 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "UserProperty")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class UserProperty {
+public abstract class UserProperty<T extends UserProperty> {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    protected Long id;
     @NotNull
     @Column(name = "user_id")
-    private Long userId;
+    protected Long userId;
     @NotNull
     @Column(name = "owner_id")
-    private Long ownerId;
+    protected Long ownerId;
     @NotNull
     @Column(name = "name")
-    private String name;
+    protected String name;
+
+    public void copy(T object) {
+        if (object.name != null)
+            this.setName(object.name);
+        if (object.userId != null)
+            this.setUserId(object.userId);
+    }
 
     public Long getId() {
         return this.id;

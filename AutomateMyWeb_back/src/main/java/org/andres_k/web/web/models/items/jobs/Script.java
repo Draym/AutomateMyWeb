@@ -7,8 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "Script")
 @Table(name = "job_scripts")
-public class Script extends UserProperty {
-    @NotNull
+public class Script extends UserProperty<Script> {
     @Column(name = "description")
     private String description;
     @NotNull
@@ -28,5 +27,14 @@ public class Script extends UserProperty {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public void copy(Script object) {
+        super.copy(object);
+        if (object.value != null)
+            this.setValue(object.value);
+        if (object.description != null)
+            this.setDescription(object.description);
     }
 }

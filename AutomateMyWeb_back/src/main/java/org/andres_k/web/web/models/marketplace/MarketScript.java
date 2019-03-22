@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "MarketScript")
 @Table(name = "market_scripts")
-public class MarketScript extends UserProperty {
+public class MarketScript extends UserProperty<MarketScript> {
     @NotNull
     @Column(name = "description")
     private String description;
@@ -56,4 +56,16 @@ public class MarketScript extends UserProperty {
         this.version = version;
     }
 
+    @Override
+    public void copy(MarketScript object) {
+        super.copy(object);
+        if (object.description != null)
+            this.setDescription(object.description);
+        if (object.imageURL != null)
+            this.setImageURL(object.imageURL);
+        if (object.script != null)
+            this.setScript(object.script);
+        if (object.version != null)
+            this.setVersion(object.version);
+    }
 }

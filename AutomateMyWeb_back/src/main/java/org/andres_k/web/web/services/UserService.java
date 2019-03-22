@@ -18,9 +18,9 @@ public class UserService {
     private RoleRepository roleRepository;
 
     public User createUser(User user) throws Exception {
-        if (this.userRepository.findByEmail(user.getEmail()) != null)
+        if (this.userRepository.existsUserByEmail(user.getEmail()))
             throw new Exception("The email '" + user.getEmail() + "' is already used.");
-        else if (this.userRepository.findByPseudo(user.getPseudo()) != null)
+        else if (this.userRepository.existsUserByPseudo(user.getPseudo()))
             throw new Exception("The pseudo '" + user.getPseudo() + "' is already used.");
         else {
             user.setPassword(PasswordStorage.createHash(user.getPassword()));
@@ -29,6 +29,25 @@ public class UserService {
             role.setUserId(user.getId());
             role.setRole(this.roleRepository.getOne(0L));
             this.userRoleRepository.save(role);
+            return this.userRepository.save(user);
+        }
+    }
+
+    public User updateUser(User newUser) throws Exception {
+        if (newUser.getId() == null)
+            throw new NullPointerException("The user's id is missing.");
+        Optional<User> optUser = this.userRepository.findById(newUser.getId());
+        User user;
+        if (!optUser.isPresent())
+            throw new EntityNotFoundException("No user found for the given id");
+        else
+            user = optUser.get();
+        if (!user.getEmail().equals(newUser.getEmail()) && this.userRepository.existsUserByEmail(newUser.getEmail()))
+            throw new Exception("The email '" + newUser.getEmail() + "' is already used.");
+        else if (!user.getPseudo().equals(newUser.getPseudo()) && this.userRepository.existsUserByPseudo(newUser.getPseudo()))
+            throw new Exception("The pseudo '" + newUser.getPseudo() + "' is already used.");
+        else {
+            user.copy(newUser);
             return this.userRepository.save(user);
         }
     }
