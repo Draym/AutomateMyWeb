@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.andres_k.web</groupId>
-    <artifactId>web</artifactId>
+    <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>AutomateMyWeb_back</name>
     <description>backend for AutomateMyWeb</description>
