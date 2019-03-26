@@ -1,9 +1,11 @@
 package org.andres_k.web.backend.models.auth;
 
-import org.andres_k.web.backend.utils.PasswordStorage;
+import org.andres_k.web.backend.utils.managers.PasswordManager;
+import org.andres_k.web.backend.utils.tools.THashString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity(name = "User")
 @Table(name = "users")
@@ -24,10 +26,13 @@ public class User {
     @NotNull
     @Column(name = "password")
     private String password;
+    @NotNull
+    @Column(name = "created_date")
+    private Date date;
 
-    public void copy(User user) throws PasswordStorage.CannotPerformOperationException {
+    public void copy(User user) throws THashString.CannotPerformOperationException {
         if (user.password != null)
-            this.setPassword(PasswordStorage.createHash(user.password));
+            this.setPassword(PasswordManager.hashPassword(user.password));
         if (user.enabled != null)
             this.setEnabled(user.enabled);
         if (user.email != null)
@@ -56,6 +61,10 @@ public class User {
         return this.password;
     }
 
+    public Date getDate() {
+        return this.date;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -74,5 +83,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

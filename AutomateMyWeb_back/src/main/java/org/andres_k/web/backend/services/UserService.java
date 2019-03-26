@@ -1,17 +1,22 @@
 package org.andres_k.web.backend.services;
 
 import org.andres_k.web.backend.models.auth.*;
-import org.andres_k.web.backend.utils.PasswordStorage;
+import org.andres_k.web.backend.utils.managers.EmailManager;
+import org.andres_k.web.backend.utils.managers.PasswordManager;
+import org.andres_k.web.backend.utils.tools.TRandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserActivationRepository userActivationRepository;
     @Autowired
     private UserRoleRepository userRoleRepository;
     @Autowired
@@ -23,13 +28,32 @@ public class UserService {
         else if (this.userRepository.existsUserByPseudo(user.getPseudo()))
             throw new Exception("The pseudo '" + user.getPseudo() + "' is already used.");
         else {
-            user.setPassword(PasswordStorage.createHash(user.getPassword()));
+            // update user
+            user.setPassword(PasswordManager.hashPassword(user.getPassword()));
             user.setEnabled(0);
-            UserRole role = new UserRole();
-            role.setUserId(user.getId());
-            role.setRole(this.roleRepository.getOne(0L));
-            this.userRoleRepository.save(role);
-            return this.userRepository.save(user);
+            user.setDate(new Date());
+            User newUser = this.userRepository.save(user);
+
+            // create user role USER
+            UserRole userRole = new UserRole();
+            userRole.setUserId(newUser.getId());
+            Optional<Role> role = this.roleRepository.findById(ERoles.USER.get());
+            if (!role.isPresent())
+                throw new EntityNotFoundException("Cannot find the default user role.");
+            userRole.setRole(role.get());
+            this.userRoleRepository.save(userRole);
+
+            // create UserActivation
+            UserActivation userActivation = new UserActivation();
+            userActivation.setDate(new Date());
+            userActivation.setUserId(newUser.getId());
+            userActivation.setIdentifier(TRandomString.get().generate());
+            this.userActivationRepository.save(userActivation);
+
+            // send verification email
+            EmailManager.get().sendVerification(newUser, userActivation.getIdentifier());
+
+            return newUser;
         }
     }
 
@@ -58,6 +82,11 @@ public class UserService {
             throw new EntityNotFoundException("Cannot find user [id=" + id + "]");
         this.userRepository.delete(user.get());
         this.userRoleRepository.deleteAllByUserId(id);
+        this.userActivationRepository.deleteAllByUserId(id);
+    }
+
+    public void deleteRole(Long userId, Long roleId) {
+        this.userRoleRepository.deleteByUserIdAndRoleId(userId, roleId);
     }
 
 }

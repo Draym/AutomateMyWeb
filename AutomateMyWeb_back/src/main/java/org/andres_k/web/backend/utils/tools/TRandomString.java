@@ -1,10 +1,10 @@
-package org.andres_k.web.backend.utils;
+package org.andres_k.web.backend.utils.tools;
 
 import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.Random;
 
-public class RandomString {
+public class TRandomString {
 
     private final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -14,7 +14,7 @@ public class RandomString {
 
     private final String alphanum = upper + lower + digits;
 
-    public String generate(int length, Random random, String symbols) {
+    private String generate(int length, Random random, String symbols) {
         if (length < 1)
             throw new IllegalArgumentException();
         if (symbols.length() < 2)
@@ -54,14 +54,14 @@ public class RandomString {
     /**
      * SINGLETON
      **/
-    private static RandomString instance;
+    private static TRandomString instance;
 
-    private RandomString() {
+    private TRandomString() {
     }
 
-    public static RandomString get() {
+    public static TRandomString get() {
         if (instance == null) {
-            instance = new RandomString();
+            instance = new TRandomString();
         }
         return instance;
     }

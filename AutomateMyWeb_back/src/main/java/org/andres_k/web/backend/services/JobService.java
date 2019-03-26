@@ -3,8 +3,8 @@ package org.andres_k.web.backend.services;
 import org.andres_k.web.backend.models.UserProperty;
 import org.andres_k.web.backend.models.items.jobs.JobRepository;
 import org.andres_k.web.backend.models.items.jobs.Script;
-import org.andres_k.web.backend.utils.EncryptTools;
-import org.andres_k.web.backend.utils.PasswordStorage;
+import org.andres_k.web.backend.utils.tools.TEncrypt;
+import org.andres_k.web.backend.utils.tools.THashString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +22,12 @@ public class JobService<T extends UserProperty> {
     @Autowired
     JobRepository<T> jobRepository;
 
-    public String createSharedLink(Script script) throws PasswordStorage.CannotPerformOperationException {
-        return EncryptTools.encrypt("name=" + script.getName() + "_id=" + script.getId());
+    public String createSharedLink(Script script) {
+        return TEncrypt.encrypt("name=" + script.getName() + "_id=" + script.getId());
     }
 
     public T getJobFromLink(String link) throws Exception {
-        String[] values = EncryptTools.decrypt(link).split("_");
+        String[] values = TEncrypt.decrypt(link).split("_");
 
         if (values.length == 2) {
             String id = values[1];

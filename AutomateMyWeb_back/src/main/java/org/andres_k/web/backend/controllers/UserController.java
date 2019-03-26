@@ -2,7 +2,7 @@ package org.andres_k.web.backend.controllers;
 
 import org.andres_k.web.backend.models.auth.User;
 import org.andres_k.web.backend.services.UserService;
-import org.andres_k.web.backend.utils.HttpResponse;
+import org.andres_k.web.backend.config.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,11 +17,11 @@ public class UserController {
 
     @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public HttpResponse deleteUser(@RequestBody Long id) {
+    public HttpResponse deleteUser(@RequestBody Long userId) {
         HttpResponse response = new HttpResponse();
 
         try {
-            this.userService.deleteUser(id);
+            this.userService.deleteUser(userId);
             response.addResult(true);
         } catch (Exception ex) {
             response.addError("Error deleting the user:" + ex.toString());
@@ -45,11 +45,11 @@ public class UserController {
 
     @RequestMapping(value = "/user/role/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public HttpResponse deleteUserRole(@RequestBody Long id) {
+    public HttpResponse deleteUserRole(@RequestBody Long userId, @RequestBody Long roleId) {
         HttpResponse response = new HttpResponse();
 
         try {
-            this.userService.deleteUser(id);
+            this.userService.deleteRole(userId, roleId);
             response.addResult(true);
         } catch (Exception ex) {
             response.addError("Error deleting the user:" + ex.toString());

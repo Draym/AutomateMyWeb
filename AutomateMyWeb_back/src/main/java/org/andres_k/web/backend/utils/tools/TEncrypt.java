@@ -1,9 +1,9 @@
-package org.andres_k.web.backend.utils;
+package org.andres_k.web.backend.utils.tools;
 
 
 import java.util.Base64;
 
-public class EncryptTools {
+public class TEncrypt {
     public static String encrypt(String value) {
         return Base64.getEncoder().encodeToString(value.getBytes());
     }

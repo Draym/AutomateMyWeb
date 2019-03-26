@@ -3,13 +3,10 @@ package org.andres_k.web.backend.controllers;
 import org.andres_k.web.backend.models.auth.User;
 import org.andres_k.web.backend.services.AuthService;
 import org.andres_k.web.backend.services.UserService;
-import org.andres_k.web.backend.utils.HttpResponse;
+import org.andres_k.web.backend.config.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AuthController {
@@ -43,6 +40,21 @@ public class AuthController {
             response.addResult(newUser);
         } catch (Exception ex) {
             response.addError("Error creating the user:" + ex.toString());
+            ex.printStackTrace();
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/auth/validate", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpResponse validate(@RequestParam String identifier) {
+        HttpResponse response = new HttpResponse();
+
+        try {
+            this.authService.validateAccount(identifier);
+            response.addResult(true);
+        } catch (Exception ex) {
+            response.addError("Error validating the account:" + ex.toString());
         }
         return response;
     }

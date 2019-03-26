@@ -5,7 +5,7 @@ import org.andres_k.web.backend.models.items.jobs.Script;
 import org.andres_k.web.backend.models.items.jobs.ScriptRepository;
 import org.andres_k.web.backend.services.AuthService;
 import org.andres_k.web.backend.services.JobService;
-import org.andres_k.web.backend.utils.HttpResponse;
+import org.andres_k.web.backend.config.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
