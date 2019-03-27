@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.andres_k.web.app.core.scenes.auth.RegisterCtrl">
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="242.0" layoutY="80.0" text="Account Creation" />
+            <TextField fx:id="email" layoutX="207.0" layoutY="138.0" promptText="email" />
+            <TextField fx:id="pseudo" layoutX="207.0" layoutY="169.0" promptText="pseudo" />
+            <PasswordField fx:id="password" layoutX="207.0" layoutY="221.0" promptText="password" />
+            <PasswordField fx:id="passwordVerif" layoutX="207.0" layoutY="252.0" promptText="password verification" />
+            <Button layoutX="266.0" layoutY="299.0" mnemonicParsing="false" onAction="#onSubmit" text="Submit" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>
