@@ -1,4 +1,4 @@
-package org.andres_k.web.app.utils.http;
+package org.andres_k.web.app.core.http;
 
 public class HttpResponse {
     public boolean hasError;
