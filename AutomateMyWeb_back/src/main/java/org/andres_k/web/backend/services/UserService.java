@@ -7,7 +7,9 @@ import org.andres_k.web.backend.utils.tools.TRandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -21,6 +23,8 @@ public class UserService {
     private UserRoleRepository userRoleRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private TokenService tokenService;
 
     public User createUser(User user) throws Exception {
         if (this.userRepository.existsUserByEmail(user.getEmail()))
@@ -34,49 +38,57 @@ public class UserService {
             user.setDate(new Date());
             User newUser = this.userRepository.save(user);
 
-            // create user role USER
+            // createToken user role USER
             UserRole userRole = new UserRole();
             userRole.setUserId(newUser.getId());
-            Optional<Role> role = this.roleRepository.findById(ERoles.USER.get());
+            Optional<Role> role = this.roleRepository.findByValue(ERoles.USER.get());
             if (!role.isPresent())
                 throw new EntityNotFoundException("Cannot find the default user role.");
             userRole.setRole(role.get());
             this.userRoleRepository.save(userRole);
 
-            // create UserActivation
-            UserActivation userActivation = new UserActivation();
-            userActivation.setDate(new Date());
-            userActivation.setUserId(newUser.getId());
-            userActivation.setIdentifier(TRandomString.get().generate());
-            this.userActivationRepository.save(userActivation);
-
-            // send verification email
-            EmailManager.get().sendVerification(newUser, userActivation.getIdentifier());
+            this.sendVerificationUserEmail(newUser);
 
             return newUser;
         }
     }
 
     public User updateUser(User newUser) throws Exception {
-        if (newUser.getId() == null)
-            throw new NullPointerException("The user's id is missing.");
-        Optional<User> optUser = this.userRepository.findById(newUser.getId());
-        User user;
+        return updateUser(newUser, null);
+    }
+
+    public User updateUser(User newUser, Token token) throws Exception {
+        if (newUser.getId() == null && token == null)
+            throw new SecurityException("You are not allowed to modify this user");
+
+        Long targetId = (newUser.getId() == null ? token.getUserId() : newUser.getId());
+        Optional<User> optUser = this.userRepository.findById(targetId);
+
         if (!optUser.isPresent())
             throw new EntityNotFoundException("No user found for the given id");
-        else
-            user = optUser.get();
+
+        User user = optUser.get();
         if (!user.getEmail().equals(newUser.getEmail()) && this.userRepository.existsUserByEmail(newUser.getEmail()))
             throw new Exception("The email '" + newUser.getEmail() + "' is already used.");
         else if (!user.getPseudo().equals(newUser.getPseudo()) && this.userRepository.existsUserByPseudo(newUser.getPseudo()))
             throw new Exception("The pseudo '" + newUser.getPseudo() + "' is already used.");
         else {
+            if (!user.getEmail().equals(newUser.getEmail())) {
+                user.setEnabled(0);
+                this.sendVerificationUserEmail(newUser);
+            }
             user.copy(newUser);
             return this.userRepository.save(user);
         }
     }
 
     public void deleteUser(Long id) throws Exception {
+        deleteUser(id, null);
+    }
+
+    public void deleteUser(Long id, Token token) throws Exception {
+        if (token != null && !token.getId().equals(id))
+            throw new SecurityException("You are not allowed to delete this user");
         Optional<User> user = this.userRepository.findById(id);
         if (!user.isPresent())
             throw new EntityNotFoundException("Cannot find user [id=" + id + "]");
@@ -89,4 +101,21 @@ public class UserService {
         this.userRoleRepository.deleteByUserIdAndRoleId(userId, roleId);
     }
 
+    public User getUserByToken(String value) {
+        Token token = this.tokenService.getToken(value);
+
+        return this.userRepository.findById(token.getUserId()).orElse(null);
+    }
+
+    private void sendVerificationUserEmail(User user) throws IOException, MessagingException {
+        // createToken UserActivation
+        UserActivation userActivation = new UserActivation();
+        userActivation.setDate(new Date());
+        userActivation.setUserId(user.getId());
+        userActivation.setIdentifier(TRandomString.get().generate());
+        this.userActivationRepository.save(userActivation);
+
+        // send verification email
+        EmailManager.get().sendVerification(user, userActivation.getIdentifier());
+    }
 }

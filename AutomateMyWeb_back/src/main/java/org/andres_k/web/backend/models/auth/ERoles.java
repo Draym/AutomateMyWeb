@@ -1,17 +1,21 @@
 package org.andres_k.web.backend.models.auth;
 
 public enum ERoles {
-    USER(1L),
-    DEV(2L),
-    ADMIN(3L);
+    USER("USER_ROLE"),
+    DEV("DEV_ROLE"),
+    ADMIN("ADMIN_ROLE");
 
-    private Long value;
+    private String value;
 
-    ERoles(Long value) {
+    ERoles(String value) {
         this.value = value;
     }
 
-    public Long get(){
+    public String get(){
         return this.value;
+    }
+
+    public boolean isEquals(Role role) {
+        return this.value.equals(role.getValue());
     }
 }

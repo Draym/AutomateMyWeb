@@ -15,8 +15,6 @@ public class AuthService {
     private UserRepository userRepository;
     @Autowired
     private UserActivationRepository userActivationRepository;
-    @Autowired
-    private TokenRepository tokenRepository;
 
     public User login(String email, String password) throws Exception {
         User user = this.userRepository.findByEmail(email);
@@ -24,31 +22,13 @@ public class AuthService {
         if (user == null)
             throw new EntityNotFoundException("Cannot find user [email=" + email + "]");
         PasswordManager.verifyPassword(password, user.getPassword());
+        if (user.getEnabled() == 0)
+            throw new SecurityException("Please verify your email address.");
+        if (user.getEnabled() == -1)
+            throw new SecurityException("Your account has been ban.");
         return user;
     }
 
-    public User getUserByToken(String value) {
-        Token token = this.retrieveToken(value);
-
-        if (token == null)
-            throw new EntityNotFoundException("The token {" + value + "} doesn't exist.");
-        if (token.isExpired())
-            throw new NullPointerException("The token {" + value + "} has expired.");
-        return this.userRepository.findById(token.getUserId()).orElse(null);
-    }
-
-    public Token retrieveToken(String value) {
-        return this.tokenRepository.getByValue(value);
-    }
-
-    public Token generateToken(User user) {
-        Token token = new Token();
-
-        token.setUserId(user.getId());
-        token.setValue(TokenManager.generate());
-        token.setExpired(false);
-        return this.tokenRepository.save(token);
-    }
 
     public void validateAccount(String identifier) {
         Optional<UserActivation> userActivation = this.userActivationRepository.findByIdentifier(identifier);

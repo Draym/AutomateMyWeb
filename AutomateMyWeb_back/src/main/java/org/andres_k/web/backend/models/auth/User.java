@@ -33,8 +33,6 @@ public class User {
     public void copy(User user) throws THashString.CannotPerformOperationException {
         if (user.password != null)
             this.setPassword(PasswordManager.hashPassword(user.password));
-        if (user.enabled != null)
-            this.setEnabled(user.enabled);
         if (user.email != null)
             this.setEmail(user.email);
         if (user.pseudo != null)
@@ -45,7 +43,7 @@ public class User {
         return this.id;
     }
 
-    public int getEnabled() {
+    public Integer getEnabled() {
         return this.enabled;
     }
 
@@ -69,7 +67,7 @@ public class User {
         this.id = id;
     }
 
-    public void setEnabled(int enabled) {
+    public void setEnabled(Integer enabled) {
         this.enabled = enabled;
     }
 
