@@ -1,7 +1,7 @@
 package org.andres_k.web.app.utils.tools;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -29,6 +29,11 @@ public class TJson {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enableDefaultTyping();
 
+        return mapper.readValue(json, classValue);
+    }
+
+    public static <T> T toObject(String json, TypeReference classValue) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(json, classValue);
     }
 }
