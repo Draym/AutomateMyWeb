@@ -2,6 +2,7 @@ package org.andres_k.web.backend.controllers;
 
 import org.andres_k.web.backend.models.auth.custom.AuthHandler;
 import org.andres_k.web.backend.models.auth.User;
+import org.andres_k.web.backend.models.auth.custom.TokenResponse;
 import org.andres_k.web.backend.services.AuthService;
 import org.andres_k.web.backend.services.TokenService;
 import org.andres_k.web.backend.services.UserService;
@@ -57,6 +58,20 @@ public class AuthController {
         try {
             this.authService.validateAccount(identifier);
             response.addResult(true);
+        } catch (Exception ex) {
+            response.addError("Error validating the account:" + ex.toString());
+        }
+        return TJson.toString(response);
+    }
+
+    @RequestMapping(value = "/auth/token/login", method = RequestMethod.GET)
+    @ResponseBody
+    public String loginByToken(@RequestParam String token) {
+        HttpResponse response = new HttpResponse();
+
+        try {
+            TokenResponse result = this.authService.loginByToken(token);
+            response.addResult(result);
         } catch (Exception ex) {
             response.addError("Error validating the account:" + ex.toString());
         }

@@ -41,10 +41,10 @@ public class UserService {
             // createToken user role USER
             UserRole userRole = new UserRole();
             userRole.setUserId(newUser.getId());
-            Optional<Role> role = this.roleRepository.findByValue(ERoles.USER.get());
-            if (!role.isPresent())
+            Optional<Role> optRole = this.roleRepository.findByValue(ERoles.USER.get());
+            if (!optRole.isPresent())
                 throw new EntityNotFoundException("Cannot find the default user role.");
-            userRole.setRole(role.get());
+            userRole.setRole(optRole.get());
             this.userRoleRepository.save(userRole);
 
             this.sendVerificationUserEmail(newUser);
@@ -89,10 +89,10 @@ public class UserService {
     public void deleteUser(Long id, Token token) throws Exception {
         if (token != null && !token.getId().equals(id))
             throw new SecurityException("You are not allowed to delete this user");
-        Optional<User> user = this.userRepository.findById(id);
-        if (!user.isPresent())
+        Optional<User> optUser = this.userRepository.findById(id);
+        if (!optUser.isPresent())
             throw new EntityNotFoundException("Cannot find user [id=" + id + "]");
-        this.userRepository.delete(user.get());
+        this.userRepository.delete(optUser.get());
         this.userRoleRepository.deleteAllByUserId(id);
         this.userActivationRepository.deleteAllByUserId(id);
     }

@@ -46,12 +46,12 @@ public class ScriptController {
         HttpResponse response = new HttpResponse();
 
         try {
-            Optional<Script> script = this.scriptRepository.findById(scriptId);
+            Optional<Script> optScript = this.scriptRepository.findById(scriptId);
 
-            if (!script.isPresent())
+            if (!optScript.isPresent())
                 throw new NullPointerException("The script {" + scriptId + "} doesn't exist");
 
-            response.addResult(script.get());
+            response.addResult(optScript.get());
         } catch (Exception ex) {
             response.addError("Error searching the script:" + ex.toString());
         }

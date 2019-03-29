@@ -78,5 +78,4 @@ public class EmailManager {
         }
         return instance;
     }
-
 }

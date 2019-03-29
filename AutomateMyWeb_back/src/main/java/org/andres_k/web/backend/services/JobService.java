@@ -32,11 +32,11 @@ public class JobService<T extends UserProperty> {
         if (values.length == 2) {
             String id = values[1];
 
-            Optional<T> job = this.jobRepository.findById(Long.valueOf(id));
+            Optional<T> optJob = this.jobRepository.findById(Long.valueOf(id));
 
-            if (!job.isPresent())
+            if (!optJob.isPresent())
                 throw new EntityNotFoundException("The shared link is invalid: script doesn't exist");
-            return job.get();
+            return optJob.get();
         } else {
             throw new Exception("The shared link is invalid.");
         }

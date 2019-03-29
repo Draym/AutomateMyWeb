@@ -1,12 +1,13 @@
 package org.andres_k.web.backend.models.auth.custom;
 
+import org.andres_k.web.backend.models.auth.Token;
 import org.andres_k.web.backend.models.auth.User;
 
 public class TokenResponse {
-    private String token;
+    private Token token;
     private User user;
 
-    public String getToken() {
+    public Token getToken() {
         return this.token;
     }
 
@@ -14,7 +15,7 @@ public class TokenResponse {
         return this.user;
     }
 
-    public void setToken(String token) {
+    public void setToken(Token token) {
         this.token = token;
     }
 

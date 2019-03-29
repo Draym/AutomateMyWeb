@@ -1,6 +1,7 @@
 package org.andres_k.web.backend.services;
 
 import org.andres_k.web.backend.models.auth.*;
+import org.andres_k.web.backend.models.auth.custom.TokenResponse;
 import org.andres_k.web.backend.utils.managers.PasswordManager;
 import org.andres_k.web.backend.utils.managers.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ public class AuthService {
     private UserRepository userRepository;
     @Autowired
     private UserActivationRepository userActivationRepository;
+    @Autowired
+    private TokenRepository tokenRepository;
 
     public User login(String email, String password) throws Exception {
         User user = this.userRepository.findByEmail(email);
@@ -29,19 +32,33 @@ public class AuthService {
         return user;
     }
 
+    public TokenResponse loginByToken(String token) throws Exception {
+        TokenResponse result = new TokenResponse();
+
+        Optional<Token> optToken = this.tokenRepository.findByValue(token);
+
+        if (!optToken.isPresent())
+            throw new EntityNotFoundException("The token {" + token + "} has not been found.");
+        Optional<User> optUser = this.userRepository.findById(optToken.get().getUserId());
+        if (!optUser.isPresent())
+            throw new EntityNotFoundException("The user {" + optToken.get().getUserId() + "} has not been found.");
+        result.setUser(optUser.get());
+        result.setToken(optToken.get());
+        return result;
+    }
 
     public void validateAccount(String identifier) {
-        Optional<UserActivation> userActivation = this.userActivationRepository.findByIdentifier(identifier);
+        Optional<UserActivation> optUserActivation = this.userActivationRepository.findByIdentifier(identifier);
 
-        if (!userActivation.isPresent())
+        if (!optUserActivation.isPresent())
             throw new EntityNotFoundException("The identifier link {" + identifier + "} is invalid.");
 
-        Optional<User> user = this.userRepository.findById(userActivation.get().getUserId());
+        Optional<User> optUser = this.userRepository.findById(optUserActivation.get().getUserId());
 
-        if (!user.isPresent())
+        if (!optUser.isPresent())
             throw new EntityNotFoundException("No user has been found for the identifier link {" + identifier + "}.");
 
-        user.get().setEnabled(1);
-        this.userRepository.save(user.get());
+        optUser.get().setEnabled(1);
+        this.userRepository.save(optUser.get());
     }
 }

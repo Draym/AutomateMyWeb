@@ -39,7 +39,7 @@ public class TokenService {
 
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setUser(user);
-        tokenResponse.setToken(token.getValue());
+        tokenResponse.setToken(token);
 
         return tokenResponse;
     }
@@ -60,12 +60,12 @@ public class TokenService {
     }
 
     public Token getToken(String value) {
-        Optional<Token> token = this.tokenRepository.findByValue(value);
+        Optional<Token> optToken = this.tokenRepository.findByValue(value);
 
-        if (!token.isPresent())
+        if (!optToken.isPresent())
             throw new EntityNotFoundException("The token {" + value + "} doesn't exist.");
-        if (token.get().isExpired())
+        if (optToken.get().isExpired())
             throw new NullPointerException("The token {" + value + "} has expired.");
-        return token.get();
+        return optToken.get();
     }
 }
