@@ -15,21 +15,21 @@ public class TemplateElement {
     private Long id;
 
     @NotNull
+    @Column(name = "template_id")
+    private Long templateId;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "element_id")
     private WebElement element;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "template_id")
-    private Template template;
 
     public Long getId() {
         return this.id;
     }
 
-    public Template getTemplate() {
-        return this.template;
+    public Long getTemplateId() {
+        return this.templateId;
     }
 
     public WebElement getElement() {
@@ -40,8 +40,8 @@ public class TemplateElement {
         this.id = id;
     }
 
-    public void setTemplate(Template template) {
-        this.template = template;
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
     }
 
     public void setElement(WebElement element) {

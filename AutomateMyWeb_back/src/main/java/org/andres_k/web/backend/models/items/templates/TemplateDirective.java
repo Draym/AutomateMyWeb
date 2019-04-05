@@ -15,33 +15,33 @@ public class TemplateDirective {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "directive_id")
-    private Directive directive;
+    @Column(name = "template_id")
+    private Long templateId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "template_id")
-    private Template template;
+    @JoinColumn(name = "directive_id")
+    private Directive directive;
 
     public Long getId() {
         return this.id;
     }
 
-    public Template getTemplate() {
-        return this.template;
-    }
 
     public Directive getDirective() {
         return this.directive;
+    }
+
+    public Long getTemplateId() {
+        return this.templateId;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setTemplate(Template template) {
-        this.template = template;
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
     }
 
     public void setDirective(Directive directive) {
