@@ -1,0 +1,37 @@
+{
+  "name": "Login",
+  "actions": [
+    {
+      "id": "loginAds",
+      "params": {
+        "jquery_script": "$('.openX_interstitial').remove();"
+      }
+    },
+    {
+      "id": "loginTab",
+      "params": {
+        "css_selector": "{og.btn_loginTab}"
+      }
+    },
+    {
+      "id": "loginUsername",
+      "params": {
+        "css_selector": "{og.input_loginUsername}"
+      }
+    },
+    {
+      "id": "loginPassword",
+      "params": {
+        "css_selector": "{og.input_loginPassword}",
+        "value": "{#input}"
+      }
+    },
+    {
+      "id": "loginSubmit",
+      "params": {
+        "css_selector": "{og.btn_loginSubmit}",
+        "value": "{#input}"
+      }
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import org.andres_k.web.app.core.http.HttpUtils;
 import org.andres_k.web.app.core.http.models.auth.User;
 import org.andres_k.web.app.core.http.models.auth.custom.AuthHandler;
 import org.andres_k.web.app.core.http.models.auth.custom.TokenResponse;
-import org.andres_k.web.app.utils.data.UserProfile;
+import org.andres_k.web.app.utils.data.UserAuth;
 import org.andres_k.web.app.utils.tools.TJson;
 
 import java.util.HashMap;
@@ -19,9 +19,9 @@ public class AuthService {
         if (response.hasError)
             throw new Exception(response.error);
 
-        UserProfile.get().init((TokenResponse) response.result);
+        UserAuth.get().init((TokenResponse) response.result);
         if(save)
-            UserProfile.get().save();
+            UserAuth.get().save();
     }
 
     public static void register(User user) throws Exception {

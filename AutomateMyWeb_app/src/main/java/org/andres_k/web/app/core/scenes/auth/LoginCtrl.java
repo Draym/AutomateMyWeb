@@ -38,7 +38,7 @@ public class LoginCtrl {
 
         try {
             AuthService.login(user, autoLogin.isSelected());
-            SceneManager.get().switchScene(ENode.MAIN);
+            SceneManager.get().loadScene(ENode.MAIN);
         } catch (Exception ex) {
             this.printError(ex.getMessage());
         }
@@ -46,7 +46,7 @@ public class LoginCtrl {
 
     @FXML
     public void createAccount(ActionEvent event) {
-        SceneManager.get().switchScene(ENode.REGISTER);
+        SceneManager.get().loadScene(ENode.REGISTER);
     }
 
     private void printError(String error) {

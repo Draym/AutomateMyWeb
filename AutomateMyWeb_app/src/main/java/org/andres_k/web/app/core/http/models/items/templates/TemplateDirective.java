@@ -5,14 +5,14 @@ import org.andres_k.web.app.core.http.models.items.jobs.Directive;
 public class TemplateDirective {
     private Long id;
     private Directive directive;
-    private Template template;
+    private Long templateId;
 
     public Long getId() {
         return this.id;
     }
 
-    public Template getTemplate() {
-        return this.template;
+    public Long getTemplateId() {
+        return this.templateId;
     }
 
     public Directive getDirective() {
@@ -23,8 +23,8 @@ public class TemplateDirective {
         this.id = id;
     }
 
-    public void setTemplate(Template template) {
-        this.template = template;
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
     }
 
     public void setDirective(Directive directive) {

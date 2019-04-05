@@ -3,7 +3,9 @@ package org.andres_k.web.app.core.scenes;
 public enum ENode {
     LOGIN("views/auth/login.fxml"),
     REGISTER("views/auth/register.fxml"),
-    MAIN("views/appScene.fxml");
+    MAIN("views/appScene.fxml"),
+    SCRIPT_EDITOR("views/content/editors/scriptEditor.fxml"),
+    INSPECT_EDITOR("views/content/editors/inspectEditor.fxml");
 
     private String path;
 

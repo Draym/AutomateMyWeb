@@ -1,0 +1,48 @@
+{
+  "name": "Server",
+  "actions": [
+    {
+      "id" : "launchServerPlay",
+      "type": "click.firstByCss",
+      "params": {
+        "@?@input_css": "{og.btn_authPlay}"
+      }
+    },
+    {
+      "id": "selectServerAccountsContainer",
+      "type": "search.firstByCss",
+      "params": {
+        "@?@input_css": "{og.search_serverAccountsContainer}"
+      }
+    },
+    {
+      "id": "selectServerAccounts",
+      "type": "search.firstByCss",
+      "params": {
+        "@?@driver": "selectServerAccountsContainer",
+        "@?@input_css": "{og.search_serverAccounts}"
+      }
+    },
+    {
+      "id": "selectServerAccount",
+      "type": "search",
+      "func": "firstByValue",
+      "parentId": "selectServerAccounts",
+      "localisation": "{#input}"
+    },
+    {
+      "id": "launchServerAccount",
+      "type": "click",
+      "func": "firstByCss",
+      "parentId": "selectServerAccount",
+      "localisation": "{og.btn_launchServerAccount}"
+    },
+    {
+      "id": "closeServerTab",
+      "type": "tab",
+      "func": "close",
+      "parentId": null,
+      "localisation": 0
+    }
+  ]
+}

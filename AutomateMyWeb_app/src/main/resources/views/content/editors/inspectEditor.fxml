@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.TextFieldTableCell?>
+
+<AnchorPane prefHeight="577.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.andres_k.web.app.core.scenes.content.editors.InspectEditorCtrl">
+   <children>
+      <BorderPane prefHeight="679.0" prefWidth="1084.0">
+         <top>
+            <Pane prefHeight="211.0" prefWidth="788.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="elementCss" layoutX="222.0" layoutY="160.0" onMouseClicked="#selectNewElement" promptText="css-selector" />
+                  <Button fx:id="btnOpenBrowser" layoutX="419.0" layoutY="43.0" mnemonicParsing="false" onAction="#openWebBrowser" text="OpenBrowser" />
+                  <TextField fx:id="websiteURL" layoutX="19.0" layoutY="43.0" prefHeight="31.0" prefWidth="231.0" promptText="website url" />
+                  <Label layoutX="19.0" layoutY="14.0" text="Enter Website complete URL:" />
+                  <TextField fx:id="elementName" layoutX="21.0" layoutY="160.0" onMouseClicked="#selectNewElement" promptText="elementId" />
+                  <Button layoutX="419.0" layoutY="160.0" mnemonicParsing="false" onAction="#addLine" text="add" />
+                  <ComboBox fx:id="cboxDrivers" layoutX="259.0" layoutY="43.0" prefWidth="150.0" />
+                  <ComboBox fx:id="cboxTemplates" layoutX="21.0" layoutY="122.0" onAction="#changeTemplate" prefWidth="150.0" />
+                  <Label layoutX="21.0" layoutY="95.0" text="Choose a template" />
+                  <Button fx:id="btnAddTemplate" layoutX="178.0" layoutY="122.0" mnemonicParsing="false" onAction="#showAddTemplate" text="+" />
+                  <TextField fx:id="templateField" layoutX="211.0" layoutY="122.0" />
+                  <Button fx:id="btnSaveTemplate" layoutX="397.0" layoutY="122.0" mnemonicParsing="false" onAction="#createTemplate" text="V" />
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <Pane fx:id="paneContent" prefHeight="367.0" prefWidth="788.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TableView fx:id="tblElements" layoutX="14.0" layoutY="14.0" onKeyReleased="#tbl1KeyReleased" onMouseClicked="#selectRowElement" prefHeight="399.0" prefWidth="640.0">
+                     <columns>
+                        <TableColumn fx:id="colElementName" prefWidth="266.0" text="Name" />
+                        <TableColumn fx:id="colElementCss" minWidth="0.0" prefWidth="250.0" text="Css - selector" />
+                        <TableColumn fx:id="colElementBtn" prefWidth="123.0" />
+                     </columns>
+                  </TableView>
+                  <TableView fx:id="tblGenElements" layoutX="738.0" layoutY="37.0" onKeyReleased="#tbl2KeyReleased" prefHeight="375.0" prefWidth="334.0">
+                    <columns>
+                      <TableColumn fx:id="colGenElemName" prefWidth="166.0" text="Name" />
+                      <TableColumn fx:id="colGenElemCss" prefWidth="165.0" text="Css - selector" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="738.0" layoutY="4.0" prefHeight="21.0" prefWidth="234.0" text="Auto generated components" />
+                  <ImageView fitHeight="119.0" fitWidth="76.0" layoutX="659.0" layoutY="150.0" onMouseClicked="#saveGeneratedElems" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/C:/Users/keandres/Pictures/arrow.jpg" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="940.0" layoutY="-1.0" mnemonicParsing="false" onAction="#autoGenerateElems" text="run" />
+                  <ImageView fx:id="tblGenLoading" fitHeight="200.0" fitWidth="1000.0" layoutX="800.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/C:/Users/keandres/Pictures/loading.gif" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </center>
+         <bottom>
+            <Pane prefHeight="49.0" prefWidth="788.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button layoutX="1019.0" layoutY="9.0" mnemonicParsing="false" onAction="#saveCurrentTemplate" text="Save" />
+               </children>
+            </Pane>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>

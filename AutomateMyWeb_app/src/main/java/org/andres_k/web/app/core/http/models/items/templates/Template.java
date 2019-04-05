@@ -1,6 +1,7 @@
 package org.andres_k.web.app.core.http.models.items.templates;
 
 import org.andres_k.web.app.core.http.models.UserProperty;
+import org.andres_k.web.app.core.http.models.items.elements.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,4 +25,13 @@ public class Template extends UserProperty<Template> {
     public void setDirectives(List<TemplateDirective> directives) {
         this.directives = directives;
     }
+
+    public void addElement(TemplateElement element) {
+        this.elements.add(element);
+    }
+
+    public void addDirective(TemplateDirective directive) {
+        this.directives.add(directive);
+    }
+
 }

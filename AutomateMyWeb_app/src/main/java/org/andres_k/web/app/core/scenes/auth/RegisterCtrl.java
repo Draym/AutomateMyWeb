@@ -46,7 +46,7 @@ public class RegisterCtrl {
 
         try {
             AuthService.register(user);
-            SceneManager.get().switchScene(ENode.LOGIN);
+            SceneManager.get().loadScene(ENode.LOGIN);
         } catch (Exception ex) {
             this.printError(ex.getMessage());
         }

@@ -18,6 +18,14 @@
                   <Label prefHeight="46.0" prefWidth="161.0" text="Title" />
                </children></HBox>
       </top>
+         <left>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#goToInspector" prefHeight="31.0" prefWidth="124.0" text="Inspector" />
+                  <Button mnemonicParsing="false" onAction="#goToScriptEditor" prefHeight="31.0" prefWidth="176.0" text="ScriptEditor" />
+               </children>
+            </VBox>
+         </left>
     </BorderPane>
   </children>
 </AnchorPane>
