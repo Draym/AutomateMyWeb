@@ -2,6 +2,7 @@ package org.andres_k.web.app.core.http;
 
 
 import org.andres_k.web.app.utils.data.Configs;
+import org.andres_k.web.app.utils.data.ECProperty;
 import org.andres_k.web.app.utils.tools.Console;
 import org.andres_k.web.app.utils.tools.TJson;
 import org.andres_k.web.app.utils.tools.TString;
@@ -72,15 +73,16 @@ public class HttpUtils {
      **/
     private static String createUrl(String api, Map<String, String> params) throws UnsupportedEncodingException {
         String parameters = "";
+        String url = Configs.get().getConfProperty(ECProperty.SERVER_URL);
 
         if (params != null && params.size() != 0) {
             parameters += "?" + createParamsString(params);
         }
 
-        if (!TString.getLast(Configs.url).equals("/") && !TString.getFirst(api).equals("/"))
+        if (!TString.getLast(url).equals("/") && !TString.getFirst(api).equals("/"))
             api = "/" + api;
 
-        return Configs.url + api + parameters;
+        return url + api + parameters;
     }
 
 

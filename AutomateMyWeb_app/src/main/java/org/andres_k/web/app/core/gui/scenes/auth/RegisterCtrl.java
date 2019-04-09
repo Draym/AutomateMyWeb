@@ -1,4 +1,4 @@
-package org.andres_k.web.app.core.scenes.auth;
+package org.andres_k.web.app.core.gui.scenes.auth;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,9 +8,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import org.andres_k.web.app.core.http.models.auth.User;
 import org.andres_k.web.app.core.http.services.AuthService;
-import org.andres_k.web.app.core.scenes.ENode;
-import org.andres_k.web.app.core.scenes.SceneManager;
-import org.andres_k.web.app.utils.tools.Console;
+import org.andres_k.web.app.core.gui.scenes.ENode;
+import org.andres_k.web.app.core.gui.scenes.SceneManager;
+import org.andres_k.web.app.utils.exception.AppException;
 
 public class RegisterCtrl {
     @FXML
@@ -35,7 +35,7 @@ public class RegisterCtrl {
     public void onSubmit(ActionEvent event) {
 
         if (!this.password.getText().equals(this.passwordVerify.getText())) {
-            this.printError("The verification password does't match with the password.");
+            AppException.guiAlert("The verification password does't match with the password.");
             return;
         }
 
@@ -47,14 +47,8 @@ public class RegisterCtrl {
         try {
             AuthService.register(user);
             SceneManager.get().loadScene(ENode.LOGIN);
-        } catch (Exception ex) {
-            this.printError(ex.getMessage());
+        } catch (AppException ex) {
+            ex.guiPrintError(this.errorBloc, this.errorMessage);
         }
-    }
-
-    private void printError(String error) {
-        Console.log_err(error);
-        this.errorBloc.setVisible(true);
-        this.errorMessage.setText(error);
     }
 }

@@ -4,6 +4,7 @@ import org.andres_k.web.app.core.http.models.auth.Token;
 import org.andres_k.web.app.core.http.models.auth.User;
 import org.andres_k.web.app.core.http.models.auth.custom.TokenResponse;
 import org.andres_k.web.app.core.http.services.AuthService;
+import org.andres_k.web.app.utils.exception.AppException;
 
 public class UserAuth {
     public User user;
@@ -19,18 +20,22 @@ public class UserAuth {
     }
 
     public void save() {
-        Configs.get().addProperty(EProperty.TOKEN, this.token.getValue());
+        try {
+            Configs.get().addProperty(ETProperty.TOKEN, this.token.getValue());
+        } catch (AppException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupFromFiles() {
-        if (!Configs.get().hasProperty(EProperty.TOKEN))
+        if (!Configs.get().hasProperty(ETProperty.TOKEN))
             return;
-        String token = Configs.get().getProperty(EProperty.TOKEN);
+        String token = Configs.get().getProperty(ETProperty.TOKEN);
 
         try {
             TokenResponse response = AuthService.loginByToken(token);
             this.init(response);
-        } catch (Exception e) {
+        } catch (AppException e) {
             e.printStackTrace();
         }
     }

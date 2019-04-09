@@ -1,4 +1,4 @@
-package org.andres_k.web.app.core.scenes.auth;
+package org.andres_k.web.app.core.gui.scenes.auth;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,9 +9,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import org.andres_k.web.app.core.http.models.auth.custom.AuthHandler;
 import org.andres_k.web.app.core.http.services.AuthService;
-import org.andres_k.web.app.core.scenes.ENode;
-import org.andres_k.web.app.core.scenes.SceneManager;
-import org.andres_k.web.app.utils.tools.Console;
+import org.andres_k.web.app.core.gui.scenes.ENode;
+import org.andres_k.web.app.core.gui.scenes.SceneManager;
+import org.andres_k.web.app.utils.data.UserData;
+import org.andres_k.web.app.utils.exception.AppException;
 
 public class LoginCtrl {
     @FXML
@@ -39,19 +40,27 @@ public class LoginCtrl {
         try {
             AuthService.login(user, autoLogin.isSelected());
             SceneManager.get().loadScene(ENode.MAIN);
-        } catch (Exception ex) {
-            this.printError(ex.getMessage());
+        } catch (AppException ex) {
+            ex.guiPrintError(this.errorBloc, this.errorMessage);
         }
     }
 
     @FXML
-    public void createAccount(ActionEvent event) {
-        SceneManager.get().loadScene(ENode.REGISTER);
+    public void offlineMode() {
+        UserData.get().isOffline = true;
+        try {
+            SceneManager.get().loadScene(ENode.MAIN);
+        } catch (AppException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void printError(String error) {
-        Console.log_err(error);
-        this.errorBloc.setVisible(true);
-        this.errorMessage.setText(error);
+    @FXML
+    public void createAccount() {
+        try {
+            SceneManager.get().loadScene(ENode.REGISTER);
+        } catch (AppException e) {
+            e.printStackTrace();
+        }
     }
 }

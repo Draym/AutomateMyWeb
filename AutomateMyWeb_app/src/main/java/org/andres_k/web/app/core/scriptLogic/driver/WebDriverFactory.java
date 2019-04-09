@@ -1,21 +1,15 @@
 package org.andres_k.web.app.core.scriptLogic.driver;
 
-import net.lightbody.bmp.BrowserMobProxyServer;
-import net.lightbody.bmp.client.ClientUtil;
 import org.andres_k.web.app.utils.tools.TFiles;
 import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class WebDriverFactory {
 
-    public static Browser get(EDriver driver) {
+    public static Browser get(EDriver driver) throws NotFoundException {
 
         if (driver == EDriver.FIREFOX) {
             FirefoxOptions firefoxOptions = new FirefoxOptions();

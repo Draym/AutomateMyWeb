@@ -37,4 +37,14 @@ public abstract class UserProperty<T extends UserProperty> {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object other){
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof UserProperty))return false;
+        UserProperty otherMyClass = (UserProperty)other;
+
+        return this.getName().equals(otherMyClass.getName());
+    }
 }

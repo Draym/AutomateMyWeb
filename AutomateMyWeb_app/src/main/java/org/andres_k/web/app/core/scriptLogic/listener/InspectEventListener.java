@@ -1,11 +1,8 @@
 package org.andres_k.web.app.core.scriptLogic.listener;
 
-import javafx.application.Platform;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.andres_k.web.app.core.http.models.items.templates.TemplateElement;
-import org.andres_k.web.app.utils.tools.Console;
-import org.andres_k.web.app.utils.tools.TJavaFX;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;

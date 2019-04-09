@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.cell.TextFieldTableCell?>
 
-<AnchorPane prefHeight="577.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.andres_k.web.app.core.scenes.content.editors.InspectEditorCtrl">
+<AnchorPane prefHeight="577.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.andres_k.web.app.core.gui.scenes.content.editors.InspectEditorCtrl">
    <children>
       <BorderPane prefHeight="679.0" prefWidth="1084.0">
          <top>
@@ -48,13 +48,13 @@
                   <Label layoutX="738.0" layoutY="4.0" prefHeight="21.0" prefWidth="234.0" text="Auto generated components" />
                   <ImageView fitHeight="119.0" fitWidth="76.0" layoutX="659.0" layoutY="150.0" onMouseClicked="#saveGeneratedElems" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:/C:/Users/keandres/Pictures/arrow.jpg" />
+                        <Image url="@images/arrow.jpg" />
                      </image>
                   </ImageView>
                   <Button layoutX="940.0" layoutY="-1.0" mnemonicParsing="false" onAction="#autoGenerateElems" text="run" />
                   <ImageView fx:id="tblGenLoading" fitHeight="200.0" fitWidth="1000.0" layoutX="800.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:/C:/Users/keandres/Pictures/loading.gif" />
+                        <Image url="images/loading.gif" />
                      </image>
                   </ImageView>
                </children>

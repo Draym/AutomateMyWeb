@@ -1,49 +1,96 @@
 package org.andres_k.web.app.utils.data;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import org.andres_k.web.app.utils.exception.AppException;
+import org.andres_k.web.app.utils.exception.EError;
 import org.andres_k.web.app.utils.tools.TFiles;
-import org.andres_k.web.app.utils.tools.TJson;
 import org.andres_k.web.app.utils.tools.TPath;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 
 public class Configs {
-    public static final String url = "http://localhost:9090/api/";
+    private boolean valid;
     private final String fileName;
-    private Map<EProperty, String> properties;
+    private Properties tmpProperties;
+    private Properties confProperties;
 
-    public void init() {
+
+    public void init() throws AppException {
+        this.valid = true;
+        this.confProperties = new Properties();
+        this.tmpProperties = new Properties();
+
         try {
-            this.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+            InputStream stream = TFiles.getResourceAsStream(this.fileName);
+            this.confProperties.load(stream);
+        } catch (Exception e) {
+            this.valid = false;
+            throw new AppException(EError.CONFIGS_FILE, e);
+        }
+
+        try {
+            this.verifyConfigs();
+        } catch (AppException e) {
+            this.valid = false;
+            throw e;
+        }
+
+        try {
+            InputStream stream = TFiles.getFileInput(TPath.configPath(this.getConfProperty(ECProperty.CONFIG_TMP)));
+            this.tmpProperties.load(stream);
+        } catch (Exception ignored) {
         }
     }
 
-    public boolean hasProperty(EProperty key) {
-        return this.properties.containsKey(key);
+    public boolean isValid() {
+        return this.valid;
     }
 
-    public String getProperty(EProperty key) {
-        return this.properties.get(key);
+    /**
+     * Config Properties
+     */
+    public String getConfProperty(ECProperty key) {
+        return this.confProperties.getProperty(key.value);
     }
 
-    public void addProperty(EProperty key, String value) {
-        this.properties.put(key, value);
-        this.save();
+    public boolean hasConfProperty(ECProperty key) {
+        return this.confProperties.containsKey(key.value);
     }
 
-    private void save() {
-        TFiles.writeIn(TPath.configPath(this.fileName), TJson.toString(this.properties, false));
+    private void verifyConfigs() throws AppException {
+        if (!this.hasConfProperty(ECProperty.CONFIG_TMP)) {
+            this.confProperties.setProperty("tmp_config", "configs/tmp.properties");
+        }
+        if (!this.hasConfProperty(ECProperty.SERVER_URL))
+            throw new AppException(EError.CONFIGS_SERVER_URL, new Throwable());
     }
 
-    private void load() throws IOException {
-        String json = TFiles.readOut(TPath.configPath(this.fileName));
+    /**
+     * TMP Properties
+     */
+    public boolean hasProperty(ETProperty key) {
+        return this.tmpProperties.containsKey(key.value);
+    }
 
-        if (json != null)
-            this.properties = TJson.toObject(json, new TypeReference<Map<EProperty, String>>() {});
+    public String getProperty(ETProperty key) {
+        return this.tmpProperties.getProperty(key.value);
+    }
+
+    public void addProperty(ETProperty key, String value) throws AppException {
+        this.tmpProperties.setProperty(key.value, value);
+        try {
+            this.saveProperties();
+        } catch (IOException e) {
+            throw new AppException(EError.TMP_CONFIGS_FILE, e);
+        }
+    }
+
+    private void saveProperties() throws IOException {
+        OutputStream stream = TFiles.getFileOutput(TPath.configPath(this.getConfProperty(ECProperty.CONFIG_TMP)));
+
+        this.tmpProperties.store(stream, "");
     }
 
     /**
@@ -52,8 +99,8 @@ public class Configs {
     private static Configs instance;
 
     private Configs() {
-        this.properties = new HashMap<>();
-        this.fileName = "configs/data_config.json";
+        this.fileName = "/configs/application.properties";
+        this.valid = false;
     }
 
     public static Configs get() {

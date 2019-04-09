@@ -1,4 +1,4 @@
-package org.andres_k.web.app.core.scenes;
+package org.andres_k.web.app.core.gui.scenes;
 
 public enum ENode {
     LOGIN("views/auth/login.fxml"),

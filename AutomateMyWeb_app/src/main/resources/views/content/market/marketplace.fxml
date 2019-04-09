@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.andres_k.web.app.core.scenes.content.market.MarketplaceCtrl"
+            fx:controller="org.andres_k.web.app.core.gui.scenes.content.market.MarketplaceCtrl"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>

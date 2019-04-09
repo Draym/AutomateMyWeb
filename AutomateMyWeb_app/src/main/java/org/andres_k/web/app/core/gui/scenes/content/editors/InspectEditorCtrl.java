@@ -1,12 +1,10 @@
-package org.andres_k.web.app.core.scenes.content.editors;
+package org.andres_k.web.app.core.gui.scenes.content.editors;
 
 import javafx.animation.RotateTransition;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -15,23 +13,20 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
-import org.andres_k.web.app.core.http.HttpUtils;
 import org.andres_k.web.app.core.http.models.items.templates.Template;
 import org.andres_k.web.app.core.http.models.items.templates.TemplateElement;
 import org.andres_k.web.app.core.scriptLogic.driver.Browser;
 import org.andres_k.web.app.core.scriptLogic.driver.EDriver;
 import org.andres_k.web.app.core.scriptLogic.driver.WebDriverFactory;
 import org.andres_k.web.app.utils.data.UserAuth;
-import org.andres_k.web.app.utils.storage.Pair;
+import org.andres_k.web.app.utils.data.UserData;
 import org.andres_k.web.app.utils.tools.Console;
 import org.andres_k.web.app.utils.tools.TJavaFX;
-import org.andres_k.web.app.utils.tools.TJson;
+import org.andres_k.web.app.utils.tools.TSelenium;
 import org.andres_k.web.app.utils.tools.TString;
 import org.openqa.selenium.WebElement;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -237,12 +232,7 @@ public class InspectEditorCtrl {
 
     @FXML
     public void saveCurrentTemplate() {
-        try {
-            // TODO do post to save template
-            HttpUtils.POST("/", TJson.toString(this.currentTemplate));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        UserData.get().saveTemplate(this.currentTemplate);
     }
 
     @FXML
@@ -313,15 +303,15 @@ public class InspectEditorCtrl {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        List<WebElement> its = TJavaFX.getAllUI(browser.driver);
+                        List<WebElement> its = TSelenium.getAllUI(browser.driver);
                         List<TemplateElement> genElems = new ArrayList<>();
 
                         for (WebElement it : its) {
 
                             org.andres_k.web.app.core.http.models.items.elements.WebElement model = new org.andres_k.web.app.core.http.models.items.elements.WebElement();
 
-                            model.setName(TJavaFX.getName(it));
-                            model.setCssSelector(TJavaFX.getIdentifier(it));
+                            model.setName(TSelenium.getName(it));
+                            model.setCssSelector(TSelenium.getIdentifier(it));
 
                             TemplateElement element = new TemplateElement();
                             element.setElement(model);
@@ -363,7 +353,7 @@ public class InspectEditorCtrl {
                                 WebElement element = browser.driver.switchTo().activeElement();
 
                                 if (element != null) {
-                                    String result = TJavaFX.getIdentifier(element);
+                                    String result = TSelenium.getIdentifier(element);
                                     if ((currentElement != null && TString.isEqual(currentElement.getElement().getCssSelector(), result))
                                             || TString.isEqual(elementCss.getText(), result)) {
                                         continue;

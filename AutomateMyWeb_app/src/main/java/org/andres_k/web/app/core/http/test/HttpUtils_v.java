@@ -2,6 +2,7 @@ package org.andres_k.web.app.core.http.test;
 
 import org.andres_k.web.app.core.http.HttpResponse;
 import org.andres_k.web.app.utils.data.Configs;
+import org.andres_k.web.app.utils.data.ECProperty;
 import org.andres_k.web.app.utils.tools.Console;
 
 import java.io.*;
@@ -46,7 +47,9 @@ public class HttpUtils_v {
      * TOOLS
      **/
     private static HttpURLConnection createCon(String api) throws IOException {
-        URL url = new URL(Configs.url + api);
+        String server = Configs.get().getConfProperty(ECProperty.SERVER_URL);
+
+        URL url = new URL(server + api);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setConnectTimeout(5000);
         con.setReadTimeout(5000);

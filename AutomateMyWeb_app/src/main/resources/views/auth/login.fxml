@@ -12,7 +12,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.andres_k.web.app.core.scenes.auth.LoginCtrl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.andres_k.web.app.core.gui.scenes.auth.LoginCtrl">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-2.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightgrey;">
          <center>
@@ -30,6 +30,7 @@
                      </children>
                   </Pane>
                   <CheckBox fx:id="autoLogin" layoutX="337.0" layoutY="212.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="97.0" text="auto login" />
+                  <Button layoutX="487.0" layoutY="361.0" mnemonicParsing="false" onAction="#offlineMode" text="continue offline" />
                </children>
             </Pane>
          </center>

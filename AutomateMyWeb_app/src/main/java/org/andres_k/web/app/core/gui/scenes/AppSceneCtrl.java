@@ -1,11 +1,10 @@
-package org.andres_k.web.app.core.scenes;
+package org.andres_k.web.app.core.gui.scenes;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import org.andres_k.web.app.utils.tools.Console;
+import org.andres_k.web.app.utils.exception.AppException;
 
 import java.io.IOException;
 
@@ -24,7 +23,7 @@ public class AppSceneCtrl {
     {
         try {
             this.panel.setCenter(SceneManager.get().loadNode(ENode.INSPECT_EDITOR));
-        } catch (IOException e) {
+        } catch (AppException e) {
             e.printStackTrace();
         }
     }
@@ -33,7 +32,7 @@ public class AppSceneCtrl {
     public void goToInspector(ActionEvent event) {
         try {
             this.panel.setCenter(SceneManager.get().loadNode(ENode.INSPECT_EDITOR));
-        } catch (IOException e) {
+        } catch (AppException e) {
             e.printStackTrace();
         }
     }
@@ -42,7 +41,7 @@ public class AppSceneCtrl {
     public void goToScriptEditor(ActionEvent event) {
         try {
             this.panel.setCenter(SceneManager.get().loadNode(ENode.SCRIPT_EDITOR));
-        } catch (IOException e) {
+        } catch (AppException e) {
             e.printStackTrace();
         }
     }
