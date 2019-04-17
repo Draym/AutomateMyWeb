@@ -2,7 +2,7 @@ package org.andres_k.web.app.core.http.models.items.elements;
 
 import org.andres_k.web.app.core.http.models.UserProperty;
 
-public class WebElement extends UserProperty<WebElement> {
+public class WebElement extends UserProperty {
 
     private String cssSelector;
 

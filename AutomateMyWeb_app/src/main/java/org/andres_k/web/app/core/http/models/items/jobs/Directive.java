@@ -2,7 +2,7 @@ package org.andres_k.web.app.core.http.models.items.jobs;
 
 import org.andres_k.web.app.core.http.models.UserProperty;
 
-public class Directive extends UserProperty<Directive> {
+public class Directive extends UserProperty {
     private String description;
     private String value;
 

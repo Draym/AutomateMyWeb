@@ -3,7 +3,7 @@ package org.andres_k.web.app.core.http.models.marketplace;
 import org.andres_k.web.app.core.http.models.UserProperty;
 import org.andres_k.web.app.core.http.models.items.jobs.Script;
 
-public class MarketScript extends UserProperty<MarketScript> {
+public class MarketScript extends UserProperty {
     private String description;
     private String imageURL;
     private Script script;

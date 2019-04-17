@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import org.andres_k.web.app.utils.exception.AppException;
 import org.andres_k.web.app.utils.exception.EError;
+import org.andres_k.web.app.utils.tools.Console;
 import org.andres_k.web.app.utils.tools.TFiles;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class FxFactory {
         try {
             return FXMLLoader.load(TFiles.getResource(id.getPath()));
         } catch (IOException e) {
+            Console.log_err(e.getMessage());
             throw new AppException(EError.FXFACTORY_CREATE_NODE, e);
         }
     }

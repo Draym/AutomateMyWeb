@@ -15,30 +15,61 @@ public class UserData {
     private CacheManager<Directive> directives;
     private CacheManager<Script> scripts;
 
+    public enum DataType {
+        TEMPLATE(""),
+        DIRECTIVE(""),
+        SCRIPT("");
 
-    public void saveTemplate(Template data) {
+        public String endpoint;
+
+        DataType(String endpoint){
+            this.endpoint = endpoint;
+        }
+    }
+
+    public void save(Template data) {
         this.templates.save(data);
-        this.push("", data);
     }
 
-    public void saveDirective(Directive data) {
+    public void save(Directive data) {
         this.directives.save(data);
-        this.push("", data);
     }
 
-    public void saveScript(Script data) {
+    public void save(Script data) {
         this.scripts.save(data);
-        this.push("", data);
     }
 
-    private void push(String endpoint, Object data) {
+    public void push(DataType type) {
         if (!this.isOffline) {
             try {
-                HttpUtils.POST("/" + endpoint, TJson.toString(data));
+                String json;
+
+                if (type == DataType.TEMPLATE) {
+                    json = TJson.toString(this.templates.getChanges());
+                }
+                else if (type == DataType.DIRECTIVE) {
+                    json = TJson.toString(this.directives.getChanges());
+                }
+                else if (type == DataType.SCRIPT) {
+                    json = TJson.toString(this.scripts.getChanges());
+                } else
+                    return;
+
+                HttpUtils.POST(type.endpoint, json);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public CacheManager<Template> getTemplates() {
+        return this.templates;
+    }
+    public CacheManager<Directive> getDirectives() {
+        return this.directives;
+    }
+    public CacheManager<Script> getScripts() {
+        return this.scripts;
     }
 
 
@@ -49,6 +80,9 @@ public class UserData {
 
     private UserData() {
         this.isOffline = false;
+        this.templates = new CacheManager<>(ECProperty.CACHE_TEMPLATE, Template.class);
+        this.directives = new CacheManager<>(ECProperty.CACHE_DIRECTIVE, Directive.class);
+        this.scripts = new CacheManager<>(ECProperty.CACHE_SCRIPT, Script.class);
     }
 
     public static UserData get() {

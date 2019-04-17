@@ -20,7 +20,7 @@ public class AppException extends Exception {
     }
 
     public void printError() {
-        Console.log_err(this.getMessage());
+        Console.log_err(this.getErrorMessage());
         this.printStackTrace();
     }
 
@@ -29,12 +29,16 @@ public class AppException extends Exception {
     }
 
     public void guiPrintError(Pane panel, Text message) {
-        Console.log_err(this.getMessage());
+        Console.log_err(this.getErrorMessage());
         panel.setVisible(true);
         message.setText(error.getValue());
     }
 
     public static void guiAlert(String message) {
         Toaster.create(SceneManager.get().getMainWindow(), message, 10, 2, 2);
+    }
+
+    public String getErrorMessage() {
+        return this.error.getValue();
     }
 }

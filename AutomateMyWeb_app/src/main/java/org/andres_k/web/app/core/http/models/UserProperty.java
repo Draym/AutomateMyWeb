@@ -1,10 +1,14 @@
 package org.andres_k.web.app.core.http.models;
 
-public abstract class UserProperty<T extends UserProperty> {
+public abstract class UserProperty {
     protected Long id;
     protected Long userId;
     protected Long ownerId;
     protected String name;
+
+    public UserProperty(){
+
+    }
 
     public Long getId() {
         return this.id;

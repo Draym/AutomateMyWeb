@@ -2,7 +2,7 @@ package org.andres_k.web.app.core.http.models.items.jobs;
 
 import org.andres_k.web.app.core.http.models.UserProperty;
 
-public class Script extends UserProperty<Script> {
+public class Script extends UserProperty {
     private String description;
     private String value;
 

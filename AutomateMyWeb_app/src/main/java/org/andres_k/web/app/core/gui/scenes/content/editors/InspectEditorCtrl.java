@@ -13,7 +13,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.util.StringConverter;
 import org.andres_k.web.app.core.http.models.items.templates.Template;
 import org.andres_k.web.app.core.http.models.items.templates.TemplateElement;
 import org.andres_k.web.app.core.scriptLogic.driver.Browser;
@@ -21,6 +20,7 @@ import org.andres_k.web.app.core.scriptLogic.driver.EDriver;
 import org.andres_k.web.app.core.scriptLogic.driver.WebDriverFactory;
 import org.andres_k.web.app.utils.data.UserAuth;
 import org.andres_k.web.app.utils.data.UserData;
+import org.andres_k.web.app.utils.exception.AppException;
 import org.andres_k.web.app.utils.tools.Console;
 import org.andres_k.web.app.utils.tools.TJavaFX;
 import org.andres_k.web.app.utils.tools.TSelenium;
@@ -62,7 +62,7 @@ public class InspectEditorCtrl {
     @FXML
     private ComboBox<EDriver> cboxDrivers;
     @FXML
-    private ComboBox<Template> cboxTemplates;
+    private ComboBox<String> cboxTemplates;
     @FXML
     private Button btnAddTemplate;
     @FXML
@@ -73,34 +73,21 @@ public class InspectEditorCtrl {
     private ImageView tblGenLoading;
 
     private Browser browser;
-    private List<Template> templates;
     private Template currentTemplate;
     private TemplateElement currentElement;
 
     @FXML
     public void initialize() {
-        this.templates = new ArrayList<>();
-
         this.hideAddTemplate();
         this.paneContent.setVisible(false);
         this.tblElements.setEditable(true);
         this.tblGenLoading.setVisible(false);
 
-        this.cboxTemplates.setConverter(new StringConverter<Template>() {
-            @Override
-            public String toString(Template object) {
-                return object.getName();
-            }
-
-            @Override
-            public Template fromString(String string) {
-                return null;
-            }
-        });
-
         this.cboxDrivers.getItems().removeAll(this.cboxDrivers.getItems());
         this.cboxDrivers.getItems().addAll(EDriver.CHROME, EDriver.FIREFOX);
         this.cboxDrivers.getSelectionModel().select(EDriver.CHROME);
+
+        this.cboxTemplates.getItems().setAll(UserData.get().getTemplates().getKeys());
 
         this.colElementName.setCellValueFactory(param -> TJavaFX.toObservable(param.getValue().getElement().getName()));
         this.colElementName.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -160,7 +147,12 @@ public class InspectEditorCtrl {
     @FXML
     public void changeTemplate() {
         Console.log("change template");
-        this.currentTemplate = this.cboxTemplates.getSelectionModel().getSelectedItem();
+        String key = this.cboxTemplates.getSelectionModel().getSelectedItem();
+        try {
+            this.currentTemplate = UserData.get().getTemplates().get(key);
+        } catch (AppException e) {
+            e.printError();
+        }
         if (this.currentTemplate == null) {
             Console.log("wait: currentTemplate is null");
             return;
@@ -192,12 +184,14 @@ public class InspectEditorCtrl {
             return;
         Template template = new Template();
         template.setName(this.templateField.getText());
-        template.setOwnerId(UserAuth.get().user.getId());
-        template.setUserId(UserAuth.get().user.getId());
-        this.templates.add(template);
-        this.cboxTemplates.setItems(TJavaFX.toObservable(this.templates));
-        SingleSelectionModel<Template> selectionModel = this.cboxTemplates.getSelectionModel();
-        selectionModel.select(template);
+        this.cboxTemplates.getItems().add(template.getName());
+
+        UserData.get().getTemplates().save(template);
+
+        SingleSelectionModel<String> selectionModel = this.cboxTemplates.getSelectionModel();
+        selectionModel.select(template.getName());
+
+
         this.hideAddTemplate();
     }
 
@@ -231,8 +225,12 @@ public class InspectEditorCtrl {
     }
 
     @FXML
+    public void pushChanges() {
+        UserData.get().push(UserData.DataType.TEMPLATE);
+    }
+
     public void saveCurrentTemplate() {
-        UserData.get().saveTemplate(this.currentTemplate);
+        UserData.get().save(this.currentTemplate);
     }
 
     @FXML
@@ -258,6 +256,7 @@ public class InspectEditorCtrl {
             return;
         }
         this.currentTemplate.addElement(element);
+        this.saveCurrentTemplate();
         this.tblElements.getItems().add(element);
         this.tblElements.refresh();
 
@@ -289,6 +288,7 @@ public class InspectEditorCtrl {
                 --i;
             }
         }
+        this.saveCurrentTemplate();
     }
 
     @FXML
@@ -362,6 +362,7 @@ public class InspectEditorCtrl {
                                         try {
                                             if (currentElement != null) {
                                                 currentElement.getElement().setCssSelector(result);
+                                                saveCurrentTemplate();
                                                 tblElements.refresh();
                                             } else {
                                                 Console.log("field update");

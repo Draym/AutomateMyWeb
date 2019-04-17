@@ -6,7 +6,7 @@ import org.andres_k.web.app.core.http.models.items.elements.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Template extends UserProperty<Template> {
+public class Template extends UserProperty {
     private List<TemplateElement> elements = new ArrayList<>();
     private List<TemplateDirective> directives = new ArrayList<>();
 

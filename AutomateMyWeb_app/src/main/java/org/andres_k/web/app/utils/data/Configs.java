@@ -38,7 +38,7 @@ public class Configs {
         }
 
         try {
-            InputStream stream = TFiles.getFileInput(TPath.configPath(this.getConfProperty(ECProperty.CONFIG_TMP)));
+            InputStream stream = TFiles.getFileInput(TPath.cachePath(this.getConfProperty(ECProperty.CONFIG_TMP)));
             this.tmpProperties.load(stream);
         } catch (Exception ignored) {
         }
@@ -88,7 +88,7 @@ public class Configs {
     }
 
     private void saveProperties() throws IOException {
-        OutputStream stream = TFiles.getFileOutput(TPath.configPath(this.getConfProperty(ECProperty.CONFIG_TMP)));
+        OutputStream stream = TFiles.getFileOutput(TPath.cachePath(this.getConfProperty(ECProperty.CONFIG_TMP)));
 
         this.tmpProperties.store(stream, "");
     }

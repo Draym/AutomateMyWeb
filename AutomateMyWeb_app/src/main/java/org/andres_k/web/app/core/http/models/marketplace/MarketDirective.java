@@ -3,7 +3,7 @@ package org.andres_k.web.app.core.http.models.marketplace;
 import org.andres_k.web.app.core.http.models.UserProperty;
 import org.andres_k.web.app.core.http.models.items.jobs.Directive;
 
-public class MarketDirective extends UserProperty<MarketDirective> {
+public class MarketDirective extends UserProperty {
     private String description;
     private String imageURL;
     private Directive directive;

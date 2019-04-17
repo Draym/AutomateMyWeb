@@ -24,6 +24,7 @@ public class AppSceneCtrl {
         try {
             this.panel.setCenter(SceneManager.get().loadNode(ENode.INSPECT_EDITOR));
         } catch (AppException e) {
+            e.printError();
             e.printStackTrace();
         }
     }
@@ -33,6 +34,7 @@ public class AppSceneCtrl {
         try {
             this.panel.setCenter(SceneManager.get().loadNode(ENode.INSPECT_EDITOR));
         } catch (AppException e) {
+            e.printError();
             e.printStackTrace();
         }
     }
@@ -42,6 +44,7 @@ public class AppSceneCtrl {
         try {
             this.panel.setCenter(SceneManager.get().loadNode(ENode.SCRIPT_EDITOR));
         } catch (AppException e) {
+            e.printError();
             e.printStackTrace();
         }
     }
