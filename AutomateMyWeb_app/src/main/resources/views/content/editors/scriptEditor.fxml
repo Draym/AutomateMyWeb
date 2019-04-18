@@ -6,9 +6,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.andres_k.web.app.core.gui.scenes.content.editors.ScriptEditorCtrl"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.andres_k.web.app.core.gui.scenes.content.editors.ScriptEditorCtrl">
+   <children>
+      <BorderPane prefHeight="428.0" prefWidth="717.0">
+         <center>
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="716.0">
+                     <children>
+                        <HBox layoutX="-2.0" prefHeight="410.0" prefWidth="717.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+         </center>
+      </BorderPane>
+   </children>
 </AnchorPane>
