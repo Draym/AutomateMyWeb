@@ -36,14 +36,14 @@ public class UserService {
             user.setPassword(PasswordManager.hashPassword(user.getPassword()));
             user.setEnabled(0);
             user.setDate(new Date());
-            User newUser = this.userRepository.save(user);
 
             // createToken user role USER
             UserRole userRole = new UserRole();
-            userRole.setUserId(newUser.getId());
             Optional<Role> optRole = this.roleRepository.findByValue(ERoles.USER.get());
             if (!optRole.isPresent())
                 throw new EntityNotFoundException("Cannot find the default user role.");
+            User newUser = this.userRepository.save(user);
+            userRole.setUserId(newUser.getId());
             userRole.setRole(optRole.get());
             this.userRoleRepository.save(userRole);
 
